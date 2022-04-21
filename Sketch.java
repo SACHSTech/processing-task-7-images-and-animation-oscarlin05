@@ -1,36 +1,71 @@
 import processing.core.PApplet;
+import processing.core.PImage;
+
+/** 
+ * Description: a program that has a planet bouncing around in space and another planet moving in a circular motion. 
+ * @author Lin. O
+ * 
+ */
 
 public class Sketch extends PApplet {
 	
-	
-  /**
-   * Called once at the beginning of execution, put your size all in this method
-   */
+	PImage imgSpaceBackground;
+  PImage imgPlanet;
+
   public void settings() {
 	// put your size call here
-    size(400, 400);
+    size(700, 700);
   }
 
-  /** 
-   * Called once at the beginning of execution.  Add initial set up
-   * values here i.e background, stroke, fill etc.
-   */
+    // declare speed 
+    float fltX = 50;
+    float fltY = 575;
+    float fltXSpeed = 7;
+    float fltYSpeed = 6;
+
+    // declare planet coordinates 
+    float fltPlanetX = 0;
+    float fltPlanetY = 0;
+    float fltPlanetCircle;
+    float fltPlanetXSpeed = 5;
+    float fltPlanetYSpeed = 5;
+    float fltPlanetRadius = 275;
+
   public void setup() {
-    background(210, 255, 173);
+    // load images from files 
+    imgSpaceBackground = loadImage("space.jpg");
+    imgPlanet = loadImage("planet.png");
+    imgPlanet.resize(100, 100);
   }
 
-  /**
-   * Called repeatedly, anything drawn to the screen goes here
-   */
   public void draw() {
-	  
-	// sample code, delete this stuff
-    stroke(128);
-    line(150, 25, 270, 350);  
 
-    stroke(255);
-    line(50, 125, 70, 50);  
-  }
+    // declare background and relocate it
+    image(imgSpaceBackground, 0, -100);
+
+    // draw circle and animate it
+    stroke(0);
+    fill(255, 241, 115); 
+    ellipse(fltX, fltY, 50, 50);
+	  
+    fltX += fltXSpeed;
+    fltY += fltYSpeed;
+
+    // set boundries 
+    if (fltX < 25 || fltX > 675) {
+      fltXSpeed *= -1;
+    }
+
+    if (fltY < 25 || fltY > 675) {
+      fltYSpeed *= -1;
+    }
   
-  // define other methods down here.
+    // move the image planet in circles 
+    fltPlanetCircle += (Math.PI / 100);
+    fltPlanetX = (float) (300 + Math.sin(fltPlanetCircle) * fltPlanetRadius);
+    fltPlanetY = (float) (300 + Math.cos(fltPlanetCircle) * fltPlanetRadius);
+
+    image(imgPlanet, fltPlanetX, fltPlanetY);
+
+  }
 }
